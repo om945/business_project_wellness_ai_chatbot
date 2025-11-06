@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) => MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'WellNest Chatbot',
+              title: 'WellNess AI Chatbot',
               theme: notifier.lightTheam,
               darkTheme: notifier.darkTheam,
               themeMode: ThemeMode.dark,

@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'WellNest',
+              'WellNess AI',
               style: TextStyle(
                 fontFamily: googleFontBold,
                 color: blueColor,
@@ -118,7 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: _userProfile.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),
-            ) // Show loader while profile loads
+            ) 
           : DashChat(
               currentUser: _user,
               onSend: _sendMessage,
