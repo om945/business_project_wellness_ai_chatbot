@@ -22,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late ChatUser _user;
   final ChatUser _bot = ChatUser(
     id: '2',
-    firstName: 'WellNess AI',
+    firstName: 'WELLNEX AI',
     profileImage: 'assets/icon/logo1.jpg',
   );
 
@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'WellNess AI',
+              'WELLNEX AI',
               style: TextStyle(
                 fontFamily: googleFontBold,
                 color: blueColor,
@@ -116,9 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: _userProfile.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            ) 
+          ? const Center(child: CircularProgressIndicator())
           : DashChat(
               currentUser: _user,
               onSend: _sendMessage,
