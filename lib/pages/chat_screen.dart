@@ -117,81 +117,101 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: _userProfile.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : DashChat(
-              currentUser: _user,
-              onSend: _sendMessage,
-              messages: _messages,
-              typingUsers: _typing,
-              messageOptions: MessageOptions(
-                showTime: true,
-                currentUserContainerColor: const Color(0xff303030),
-                currentUserTextColor: Colors.white,
-                containerColor: Colors.blueGrey.shade900,
-                textColor: Colors.white,
-                messageTextBuilder:
-                    (ChatMessage message, ChatMessage? p, ChatMessage? n) {
-                      return SelectableText.rich(
-                        TextSpan(children: _parseText(message.text)),
-                        style: TextStyle(
-                          fontFamily: googleFontSemiBold,
-                          fontSize: 14.sp,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-              ),
-              scrollToBottomOptions: ScrollToBottomOptions(
-                scrollToBottomBuilder: (scrollController) {
-                  return Container(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_downward),
-                      onPressed: () {
-                        scrollController.animateTo(
-                          0.0,
-                          curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 300),
+          : Column(
+              children: [
+                Expanded(
+                  child: DashChat(
+                    currentUser: _user,
+                    onSend: _sendMessage,
+                    messages: _messages,
+                    typingUsers: _typing,
+                    messageOptions: MessageOptions(
+                      showTime: true,
+                      currentUserContainerColor: const Color(0xff303030),
+                      currentUserTextColor: Colors.white,
+                      containerColor: Colors.blueGrey.shade900,
+                      textColor: Colors.white,
+                      messageTextBuilder:
+                          (
+                            ChatMessage message,
+                            ChatMessage? p,
+                            ChatMessage? n,
+                          ) {
+                            return SelectableText.rich(
+                              TextSpan(children: _parseText(message.text)),
+                              style: TextStyle(
+                                fontFamily: googleFontSemiBold,
+                                fontSize: 14.sp,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                    ),
+                    scrollToBottomOptions: ScrollToBottomOptions(
+                      scrollToBottomBuilder: (scrollController) {
+                        return Container(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_downward),
+                            onPressed: () {
+                              scrollController.animateTo(
+                                0.0,
+                                curve: Curves.easeOut,
+                                duration: const Duration(milliseconds: 300),
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
-                  );
-                },
-              ),
-              inputOptions: InputOptions(
-                inputToolbarPadding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
-                  vertical: 12.h,
-                ),
-                sendButtonBuilder: (onSend) {
-                  return IconButton(
-                    icon: Container(
-                      height: 40.h,
-                      width: 40.w,
-                      decoration: BoxDecoration(
-                        color: blueColor,
-                        borderRadius: BorderRadius.circular(15.r),
+                    inputOptions: InputOptions(
+                      inputToolbarPadding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 12.h,
                       ),
-                      child: Icon(Icons.arrow_upward_rounded, size: 30.sp),
+                      sendButtonBuilder: (onSend) {
+                        return IconButton(
+                          icon: Container(
+                            height: 40.h,
+                            width: 40.w,
+                            decoration: BoxDecoration(
+                              color: blueColor,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Icon(
+                              Icons.arrow_upward_rounded,
+                              size: 30.sp,
+                            ),
+                          ),
+                          onPressed: onSend,
+                        );
+                      },
+                      inputDecoration: InputDecoration(
+                        fillColor: const Color(0xff2F3030),
+                        filled: true,
+                        hintText: 'Type a message...',
+                        hintStyle: const TextStyle(color: Colors.white54),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0.r),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      cursorStyle: const CursorStyle(color: blueColor),
+                      inputTextStyle: TextStyle(
+                        fontFamily: googleFontNormal,
+                        color: Colors.white,
+                      ),
                     ),
-                    onPressed: onSend,
-                  );
-                },
-                inputDecoration: InputDecoration(
-                  fillColor: const Color(0xff2F3030),
-                  filled: true,
-                  hintText: 'Type a message...',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0.r),
-                    borderSide: BorderSide.none,
                   ),
                 ),
-                cursorStyle: const CursorStyle(color: blueColor),
-                inputTextStyle: TextStyle(
-                  fontFamily: googleFontNormal,
-                  color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'WELLNEX AI can make mistakes.\nCheck important info.',
+                  ),
                 ),
-              ),
+              ],
             ),
     );
   }
