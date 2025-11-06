@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:wellnest_chatbot/models/storage_service.dart';
 import 'package:wellnest_chatbot/pages/chat_screen.dart';
+import 'package:wellnest_chatbot/pages/gender_selection.dart';
 import 'package:wellnest_chatbot/theme/theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -20,8 +22,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _ageController = TextEditingController();
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
+  String? _selectedGender;
 
   bool _isLoading = false;
+  double? _bmi;
+
+  @override
+  void initState() {
+    super.initState();
+    _weightController.addListener(_calculateBmi);
+    _heightController.addListener(_calculateBmi);
+  }
+
+  void _calculateBmi() {
+    final weight = double.tryParse(_weightController.text);
+    final height = double.tryParse(_heightController.text);
+
+    if (weight != null && height != null && height > 0) {
+      final heightInMeters = height / 100;
+      setState(() {
+        _bmi = weight / (heightInMeters * heightInMeters);
+      });
+    }
+  }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -31,12 +54,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final age = int.parse(_ageController.text);
       final weight = double.parse(_weightController.text);
       final height = double.parse(_heightController.text);
+      final gender = _selectedGender;
+
+      if (gender == null) {
+        // Optionally show a snackbar or message to select gender
+      }
 
       await _storageService.saveUserProfile(
         name: name,
         age: age,
         weight: weight,
         height: height,
+        gender: gender!,
       );
 
       if (mounted) {
@@ -53,6 +82,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _ageController.dispose();
     _weightController.dispose();
     _heightController.dispose();
+    _weightController.removeListener(_calculateBmi);
+    _heightController.removeListener(_calculateBmi);
     super.dispose();
   }
 
@@ -79,6 +110,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 _buildTextField(_nameController, 'Name', TextInputType.name),
                 SizedBox(height: 16.h),
+                GenderSelection(
+                  onChanged: (gender) {
+                    setState(() {
+                      _selectedGender = gender;
+                    });
+                  },
+                ),
                 _buildTextField(_ageController, 'Age', TextInputType.number),
                 SizedBox(height: 16.h),
                 _buildTextField(
@@ -92,6 +130,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   'Height (CM)',
                   const TextInputType.numberWithOptions(decimal: true),
                 ),
+                if (_bmi != null) ...[
+                  SizedBox(height: 20.h),
+                  Text(
+                    'Your BMI: ${_bmi!.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      color: blueColor,
+                      fontFamily: googleFontBold,
+                      fontSize: 18.sp,
+                    ),
+                  ),
+                ],
                 SizedBox(height: 32.h),
                 _isLoading
                     ? const CircularProgressIndicator()
@@ -144,7 +193,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) return 'Please enter your $label';
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        if (keyboardType == TextInputType.number &&
+            int.tryParse(value) == null) {
+          return 'Please enter a valid number';
+        }
         return null;
       },
     );

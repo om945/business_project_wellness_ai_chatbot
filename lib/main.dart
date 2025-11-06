@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
             minTextAdapt: true,
             splitScreenMode: true,
             builder: (context, child) => MaterialApp(
-              debugShowCheckedModeBanner: false,
+              debugShowCheckedModeBanner: true,
               title:
                   'WELLNEX AI: SMART LIFESTYLE AND NUTRITION ADVISORY SYSTEM',
               theme: notifier.lightTheam,
