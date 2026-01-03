@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:wellnest_chatbot/models/env.dart';
 
 class AiService {
-  static const List<String> _apiKeys = [
-    "AIzaSyD7p-1sAR4kef-tKM-l-vNYxshUA7ML3Q", // Primary key
-    "AIzaSyD4uuW6R--vD6mANp6eVUfdO_6ndZhhUQ8", // Fallback key
-  ];
+  static final String Api_1 = Env.api_1;
+  static final String Api_2 = Env.api_2;
+
+  static final List<String> _apiKeys = ["$Api_1", "$Api_2"];
 
   static const String _model = "models/gemini-2.5-flash";
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wellnest_chatbot/models/storage_service.dart'; // This path is correct based on your structure
 import 'package:wellnest_chatbot/pages/chat_screen.dart';
@@ -15,6 +16,8 @@ void main() async {
   ]);
   final storageService = StorageService();
   final bool onboardingComplete = await storageService.isOnboardingComplete();
+
+  dotenv.load(fileName: ".env");
 
   runApp(MyApp(onboardingComplete: onboardingComplete));
 }
